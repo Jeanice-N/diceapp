@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import {
-  Typography,
-  TextField,
-  Button,
-  InputAdornment,
-  IconButton,
-} from "@material-ui/core";
+import { InputAdornment, IconButton } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
-import { fetchEvents } from "../actions/eventsActions";
+import { fetchEvents } from "../eventsActions";
+import {
+  Form,
+  Header,
+  SearchButton,
+  SearchField,
+  Wrapper,
+} from "../eventsStyles";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -24,9 +25,9 @@ export default function Events() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleOnChange}>
-        <TextField
+    <Wrapper>
+      <Form onSubmit={handleOnChange}>
+        <SearchField
           label="Venue"
           variant="outlined"
           fullWidth
@@ -42,11 +43,11 @@ export default function Events() {
             ),
           }}
         />
-        <Button variant="contained" type="submit" color="primary">
+        <SearchButton variant="contained" type="submit" color="primary">
           Search
-        </Button>
-      </form>
-      <Typography>Upcoming events as Venue</Typography>
-    </div>
+        </SearchButton>
+      </Form>
+      {venue && <Header variant="h5">{`Upcoming events at ${venue}`}</Header>}
+    </Wrapper>
   );
 }

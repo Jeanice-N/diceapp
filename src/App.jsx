@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "./components/Events";
+import Events from "./events/components/Events";
 
 function App() {
   return <Events />;
