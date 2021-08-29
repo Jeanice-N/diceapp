@@ -2,13 +2,8 @@ import React, { useState } from "react";
 import { InputAdornment, IconButton } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import { fetchEvents } from "../eventsActions";
-import {
-  Form,
-  Header,
-  SearchButton,
-  SearchField,
-  Wrapper,
-} from "../eventsStyles";
+import { Form, SearchButton, SearchField, Wrapper } from "../eventsStyles";
+import VenueEvents from "./VenueEvents";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -47,7 +42,9 @@ export default function Events() {
           Search
         </SearchButton>
       </Form>
-      {venue && <Header variant="h5">{`Upcoming events at ${venue}`}</Header>}
+      {venue && events?.data?.length && (
+        <VenueEvents venue={venue} events={events.data} />
+      )}
     </Wrapper>
   );
 }
