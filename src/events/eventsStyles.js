@@ -41,7 +41,10 @@ export const Header = styled(Typography)`
 export const EventsRow = styled(Container)`
   && {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(${theme.spacing(32)}px, 1fr)
+    );
     grid-gap: ${theme.spacing(2)}px;
     justify-items: center;
   }

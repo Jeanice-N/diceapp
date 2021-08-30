@@ -94,6 +94,7 @@ export default function Event({ event }) {
         )}
         <Thumbnail isFeatured={featured} src={image} alt={name} />
       </ImageWrapper>
+
       <Typography variant="subtitle1">
         {moment(date).format("ddd DD MMM")} — {moment(date).format("LT")}
       </Typography>
@@ -102,6 +103,7 @@ export default function Event({ event }) {
       <LocationText variant="subtitle1">
         {`${location.city}, ${location.country}`}
       </LocationText>
+
       <AccordionStyled>
         <AccordionSummary expandIcon={<AddIcon />}>
           <Subtitle variant="body2">More Info</Subtitle>

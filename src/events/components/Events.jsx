@@ -22,26 +22,36 @@ export default function Events() {
   const [nextLink, setNextLink] = useState(null);
   const [venue, setVenue] = useState("");
   const [isNoResults, setIsNoResults] = useState(false);
+  const [isError, setError] = useState(false);
 
   useEffect(() => {
     if (!venue) {
-      setNextLink(null);
+      handleOnClear();
     }
   }, [venue]);
 
   const handleOnChange = async (e) => {
     e.preventDefault();
+
+    if (!venue) {
+      setError(true);
+      return;
+    }
+
     const firstEvents = await fetchEvents(venue);
+    if (!firstEvents.data.length) setIsNoResults(true);
+
     setEvents(firstEvents.data);
     setNextLink(firstEvents?.links?.next);
-    if (!firstEvents.data.length) setIsNoResults(true);
+    setError(false);
   };
 
-  const handleOnClear = async (e) => {
+  const handleOnClear = () => {
     setVenue("");
     setEvents([]);
     setNextLink(null);
     setIsNoResults(false);
+    setError(false);
   };
 
   const handleLoadMore = async (e) => {
@@ -69,6 +79,8 @@ export default function Events() {
               </InputAdornment>
             ),
           }}
+          error={isError}
+          helperText={isError && "Venue name required"}
         />
         <SearchButton variant="contained" type="submit" color="primary">
           Search
