@@ -192,3 +192,8 @@ export const FromText = styled(Typography)`
     color: ${theme.palette.grey[600]};
   }
 `;
+
+export const LoadMoreWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;

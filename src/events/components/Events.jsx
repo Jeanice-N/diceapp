@@ -1,22 +1,38 @@
 import React, { useState } from "react";
-import { InputAdornment, IconButton } from "@material-ui/core";
+import { InputAdornment, IconButton, Button } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import { fetchEvents } from "../eventsActions";
-import { Form, SearchButton, SearchField, Wrapper } from "../eventsStyles";
+import {
+  Form,
+  LoadMoreWrapper,
+  SearchButton,
+  SearchField,
+  Wrapper,
+} from "../eventsStyles";
 import VenueEvents from "./VenueEvents";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
+  const [nextLink, setNextLink] = useState(null);
   const [venue, setVenue] = useState("");
 
   const handleOnChange = async (e) => {
     e.preventDefault();
-    setEvents(await fetchEvents(venue));
+    const firstEvents = await fetchEvents(venue);
+    setEvents(firstEvents.data);
+    setNextLink(firstEvents?.links?.next);
   };
 
   const handleOnClear = async (e) => {
     setVenue("");
-    setEvents(await fetchEvents(""));
+    setEvents([]);
+  };
+
+  const handleLoadMore = async (e) => {
+    e.preventDefault();
+    const nextEvents = await fetchEvents(venue, nextLink);
+    setEvents(events.concat(nextEvents.data));
+    setNextLink(nextEvents?.links?.next);
   };
 
   return (
@@ -42,8 +58,21 @@ export default function Events() {
           Search
         </SearchButton>
       </Form>
-      {venue && events?.data?.length && (
-        <VenueEvents venue={venue} events={events.data} />
+      {Boolean(venue && events.length) && (
+        <VenueEvents venue={venue} events={events} />
+      )}
+
+      {nextLink && (
+        <LoadMoreWrapper>
+          <Button
+            variant="contained"
+            color="secondary"
+            fullWidth
+            onClick={handleLoadMore}
+          >
+            Load More
+          </Button>
+        </LoadMoreWrapper>
       )}
     </Wrapper>
   );

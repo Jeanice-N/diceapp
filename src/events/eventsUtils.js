@@ -14,6 +14,12 @@ export const sortEvents = (events) => {
   return featuredEvents.concat(nonFeaturedEvents);
 };
 
+/**
+ * Finds if event is currently on sale
+ * @param {string} startDate
+ * @param {string} endDate
+ * @returns bool
+ */
 const isOnSaleNow = (startDate, endDate) => {
   const dateNow = new Date();
 
@@ -23,6 +29,13 @@ const isOnSaleNow = (startDate, endDate) => {
   return hasSaleStarted && !hasSaleEnded;
 };
 
+/**
+ * Gets text for event button
+ * @param {string} startDate
+ * @param {string} endDate
+ * @param {bool} isSoldOut
+ * @returns string
+ */
 export const getButtonText = (startDate, endDate, isSoldOut) => {
   const isOnSale = isOnSaleNow(startDate, endDate);
 
@@ -35,12 +48,23 @@ export const getButtonText = (startDate, endDate, isSoldOut) => {
   return "get reminded";
 };
 
+/**
+ * Gets min priced ticket
+ * @param {array} ticketTypes
+ * @returns number | undefined
+ */
 export const getMinPrice = (ticketTypes) => {
   const test = ticketTypes.sort((x, y) => x.price.total - y.price.total);
 
-  return test[0].price.total;
+  return test[0]?.price?.total;
 };
 
+/**
+ * Gets audio preview url
+ * @param {array} spotify
+ * @param {array} apple
+ * @returns string | undefined
+ */
 export const getAudioUrl = (spotify, apple) => {
   const audio =
     spotify.filter((s) => s.preview_url) || apple.filter((a) => a.preview_url);

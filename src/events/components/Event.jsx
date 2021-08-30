@@ -139,7 +139,12 @@ export default function Event({ event }) {
       </AccordionStyled>
 
       <PriceWrapper>
-        <ButtonStyled variant="contained" color="primary" disabled={soldOut}>
+        <ButtonStyled
+          variant="contained"
+          color="primary"
+          disabled={soldOut}
+          disableElevation
+        >
           {buttonText}
         </ButtonStyled>
 
