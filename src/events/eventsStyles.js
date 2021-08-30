@@ -43,6 +43,7 @@ export const EventsRow = styled(Container)`
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: ${theme.spacing(2)}px;
+    justify-items: center;
   }
 `;
 
@@ -194,6 +195,12 @@ export const FromText = styled(Typography)`
 `;
 
 export const LoadMoreWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const NoResultsWrapper = styled.div`
+  padding-top: ${theme.spacing(4)}px;
   display: flex;
   justify-content: center;
 `;

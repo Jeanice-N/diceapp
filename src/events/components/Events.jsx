@@ -1,10 +1,16 @@
-import React, { useState } from "react";
-import { InputAdornment, IconButton, Button } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import {
+  InputAdornment,
+  IconButton,
+  Button,
+  Typography,
+} from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import { fetchEvents } from "../eventsActions";
 import {
   Form,
   LoadMoreWrapper,
+  NoResultsWrapper,
   SearchButton,
   SearchField,
   Wrapper,
@@ -15,17 +21,27 @@ export default function Events() {
   const [events, setEvents] = useState([]);
   const [nextLink, setNextLink] = useState(null);
   const [venue, setVenue] = useState("");
+  const [isNoResults, setIsNoResults] = useState(false);
+
+  useEffect(() => {
+    if (!venue) {
+      setNextLink(null);
+    }
+  }, [venue]);
 
   const handleOnChange = async (e) => {
     e.preventDefault();
     const firstEvents = await fetchEvents(venue);
     setEvents(firstEvents.data);
     setNextLink(firstEvents?.links?.next);
+    if (!firstEvents.data.length) setIsNoResults(true);
   };
 
   const handleOnClear = async (e) => {
     setVenue("");
     setEvents([]);
+    setNextLink(null);
+    setIsNoResults(false);
   };
 
   const handleLoadMore = async (e) => {
@@ -60,6 +76,12 @@ export default function Events() {
       </Form>
       {Boolean(venue && events.length) && (
         <VenueEvents venue={venue} events={events} />
+      )}
+
+      {isNoResults && (
+        <NoResultsWrapper>
+          <Typography variant="h4">No results</Typography>
+        </NoResultsWrapper>
       )}
 
       {nextLink && (
