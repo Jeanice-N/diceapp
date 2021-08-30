@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {
-  Accordion,
   AccordionDetails,
   AccordionSummary,
   Typography,
@@ -21,7 +20,14 @@ import {
   DetailsSpec,
   DetailsWrapper,
   SoldOutText,
+  SaleTag,
+  PriceWrapper,
+  LocationText,
+  ButtonStyled,
+  AccordionStyled,
+  FromText,
 } from "../eventsStyles";
+import { getButtonText, getMinPrice } from "../eventsUtils";
 
 export default function Event({ event }) {
   const {
@@ -42,6 +48,9 @@ export default function Event({ event }) {
   } = event;
 
   const image = featured ? eventImages.landscape : eventImages.square;
+  const isNotOnSaleYet = moment(new Date()).isSameOrBefore(saleStartDate);
+
+  const buttonText = getButtonText(saleStartDate, saleEndDate, soldOut);
 
   return (
     <EventWrapper>
@@ -51,6 +60,13 @@ export default function Event({ event }) {
             <Typography variant="subtitle2">FEATURED</Typography>
           </FeaturedTag>
         )}
+        {isNotOnSaleYet && !featured && (
+          <SaleTag>
+            <Typography variant="subtitle2">{`On sale ${moment(
+              saleStartDate
+            ).format("D MMM LT")}`}</Typography>
+          </SaleTag>
+        )}
         <Thumbnail isFeatured={featured} src={image} alt={name} />
       </ImageWrapper>
       <Typography variant="subtitle1">
@@ -58,10 +74,10 @@ export default function Event({ event }) {
       </Typography>
       <Subtitle variant="h6">{name}</Subtitle>
       <Subtitle variant="subtitle1">{venue}</Subtitle>
-      <Typography variant="subtitle1">
+      <LocationText variant="subtitle1">
         {`${location.city}, ${location.country}`}
-      </Typography>
-      <Accordion>
+      </LocationText>
+      <AccordionStyled>
         <AccordionSummary expandIcon={<AddIcon />}>
           <Subtitle variant="body2">More Info</Subtitle>
         </AccordionSummary>
@@ -72,8 +88,8 @@ export default function Event({ event }) {
               <Details variant="button">line up</Details>
             </DetailsWrapper>
             {lineup.map((l) => (
-              <DetailsItem>
-                <DetailsName variant="body2">{`${l.details}`}</DetailsName>
+              <DetailsItem key={lineup.indexOf(l)}>
+                <DetailsName variant="body2">{l.details}</DetailsName>
                 {l.time && (
                   <DetailsSpec variant="body2">— {l.time}</DetailsSpec>
                 )}
@@ -83,8 +99,8 @@ export default function Event({ event }) {
               <Details variant="button">tickets</Details>
             </DetailsWrapper>
             {ticketTypes.map((ticket) => (
-              <DetailsItem>
-                <DetailsName variant="body2">{`${ticket.name}`}</DetailsName>
+              <DetailsItem key={ticket.id}>
+                <DetailsName variant="body2">{ticket.name}</DetailsName>
                 <DetailsSpec variant="body2">
                   — £{ticket.price.total}
                 </DetailsSpec>
@@ -95,7 +111,18 @@ export default function Event({ event }) {
             ))}
           </div>
         </AccordionDetails>
-      </Accordion>
+      </AccordionStyled>
+
+      <PriceWrapper>
+        <ButtonStyled variant="contained" color="primary" disabled={soldOut}>
+          {buttonText}
+        </ButtonStyled>
+
+        <div>
+          {ticketTypes.length > 1 && <FromText variant="body2">From</FromText>}
+          <Typography variant="h5">£{getMinPrice(ticketTypes)}</Typography>
+        </div>
+      </PriceWrapper>
     </EventWrapper>
   );
 }
