@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   AccordionDetails,
@@ -6,6 +6,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
 import moment from "moment";
 import {
   EventWrapper,
@@ -26,8 +28,10 @@ import {
   ButtonStyled,
   AccordionStyled,
   FromText,
+  Play,
+  PlayButton,
 } from "../eventsStyles";
-import { getButtonText, getMinPrice } from "../eventsUtils";
+import { getButtonText, getMinPrice, getAudioUrl } from "../eventsUtils";
 
 export default function Event({ event }) {
   const {
@@ -49,8 +53,22 @@ export default function Event({ event }) {
 
   const image = featured ? eventImages.landscape : eventImages.square;
   const isNotOnSaleYet = moment(new Date()).isSameOrBefore(saleStartDate);
-
   const buttonText = getButtonText(saleStartDate, saleEndDate, soldOut);
+  const audioUrl = getAudioUrl(spotify, apple);
+
+  const [playing, setPlaying] = useState(false);
+  const [audio] = useState(new Audio(audioUrl));
+
+  const togglePlayButton = () => {
+    if (playing) {
+      audio.pause();
+      setPlaying(false);
+      return;
+    }
+
+    audio.play();
+    setPlaying(true);
+  };
 
   return (
     <EventWrapper>
@@ -66,6 +84,13 @@ export default function Event({ event }) {
               saleStartDate
             ).format("D MMM LT")}`}</Typography>
           </SaleTag>
+        )}
+        {audioUrl && (
+          <Play>
+            <PlayButton onClick={togglePlayButton}>
+              {playing ? <PauseIcon /> : <PlayArrowIcon />}
+            </PlayButton>
+          </Play>
         )}
         <Thumbnail isFeatured={featured} src={image} alt={name} />
       </ImageWrapper>

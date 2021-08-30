@@ -4,6 +4,7 @@ import {
   Button,
   Container,
   createTheme,
+  IconButton,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -86,6 +87,21 @@ export const SaleTag = styled.div`
   background-color: ${theme.palette.common.black};
   padding: ${theme.spacing(0.5)}px;
   color: ${theme.palette.common.white};
+`;
+
+export const Play = styled.div`
+  float: left;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  background-color: ${theme.palette.grey[800]};
+  opacity: 70%;
+`;
+
+export const PlayButton = styled(IconButton)`
+  && {
+    color: ${theme.palette.common.white};
+  }
 `;
 
 export const Subtitle = styled(Typography)`

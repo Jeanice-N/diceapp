@@ -40,3 +40,10 @@ export const getMinPrice = (ticketTypes) => {
 
   return test[0].price.total;
 };
+
+export const getAudioUrl = (spotify, apple) => {
+  const audio =
+    spotify.filter((s) => s.preview_url) || apple.filter((a) => a.preview_url);
+
+  return audio[0]?.preview_url;
+};
