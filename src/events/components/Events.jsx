@@ -39,8 +39,8 @@ export default function Events() {
     }
 
     const firstEvents = await fetchEvents(venue);
-    if (!firstEvents.data.length) setIsNoResults(true);
 
+    setIsNoResults(Boolean(!firstEvents.data.length));
     setEvents(firstEvents.data);
     setNextLink(firstEvents?.links?.next);
     setError(false);
