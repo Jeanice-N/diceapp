@@ -87,7 +87,7 @@ export default function Event({ event }) {
         )}
         {audioUrl && (
           <Play>
-            <PlayButton onClick={togglePlayButton}>
+            <PlayButton onClick={togglePlayButton} data-testid="playBtn">
               {playing ? <PauseIcon /> : <PlayArrowIcon />}
             </PlayButton>
           </Play>

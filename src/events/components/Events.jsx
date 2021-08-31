@@ -15,7 +15,7 @@ import {
   SearchField,
   Wrapper,
 } from "../eventsStyles";
-import VenueEvents from "./VenueEvents";
+import EventsResult from "./EventsResult";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
@@ -73,27 +73,28 @@ export default function Events() {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={handleOnClear}>
+                <IconButton onClick={handleOnClear} data-testid="clearBtn">
                   <ClearIcon />
                 </IconButton>
               </InputAdornment>
             ),
           }}
           error={isError}
-          helperText={isError && "Venue name required"}
+          helperText={isError && "Venue name is required"}
         />
         <SearchButton variant="contained" type="submit" color="primary">
           Search
         </SearchButton>
       </Form>
-      {Boolean(venue && events.length) && (
-        <VenueEvents venue={venue} events={events} />
-      )}
 
       {isNoResults && (
         <NoResultsWrapper>
           <Typography variant="h4">No results</Typography>
         </NoResultsWrapper>
+      )}
+
+      {Boolean(venue && events.length) && (
+        <EventsResult venue={venue} events={events} />
       )}
 
       {nextLink && (

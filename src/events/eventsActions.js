@@ -12,9 +12,12 @@ export async function fetchEvents(venue, nextLink = null) {
     nextLink ??
     `https://events-api.dice.fm/v1/events?filter[venues]=${venue}&page[size]=12`;
 
-  const { data } = await axios.get(url, { headers: config });
-
-  return data;
+  try {
+    const { data } = await axios.get(url, { headers: config });
+    return data;
+  } catch (err) {
+    return [];
+  }
 }
 
 export default fetchEvents;

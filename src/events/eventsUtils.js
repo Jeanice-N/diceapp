@@ -20,7 +20,7 @@ export const sortEvents = (events) => {
  * @param {string} endDate
  * @returns bool
  */
-const isOnSaleNow = (startDate, endDate) => {
+export const isOnSaleNow = (startDate, endDate) => {
   const dateNow = new Date();
 
   const hasSaleStarted = moment(dateNow).isSameOrAfter(startDate);
